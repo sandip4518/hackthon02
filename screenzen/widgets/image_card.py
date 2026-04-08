@@ -57,19 +57,6 @@ class ImageCard(ctk.CTkFrame):
         )
         self.checkbox.place(x=8, y=8)
 
-        # Status indicator (OCR processed or not)
-        is_processed = screenshot_data.get("is_processed", 0)
-        status_text = "✅" if is_processed else "⏳"
-        status_color = "#a6e3a1" if is_processed else "#f9e2af"
-
-        self.status_label = ctk.CTkLabel(
-            self,
-            text=status_text,
-            font=ctk.CTkFont(size=12),
-            width=24,
-        )
-        self.status_label.place(relx=1.0, x=-30, y=8)
-
         # Thumbnail image
         self.image_frame = ctk.CTkFrame(
             self,
