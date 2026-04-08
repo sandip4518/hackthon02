@@ -1,0 +1,39 @@
+# Byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.spec
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Runtime data
+data/
+*.db
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Node (legacy from previous version)
+node_modules/
+package-lock.json
+package.json
+next-env.d.ts
+tsconfig.json
+postcss.config.js
+tailwind.config.ts
