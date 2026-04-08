@@ -45,24 +45,29 @@ class ScreenshotWatcher:
         self.observer = None
 
     def start(self):
-        """Start monitoring the screenshots folder."""
-        # Standard Windows Screenshots location
-        screenshots_dir = os.path.join(
-            os.path.expanduser("~"), "Pictures", "Screenshots"
-        )
+        """Start monitoring all potential screenshot folders."""
+        possible_dirs = [
+            os.path.join(os.path.expanduser("~"), "Pictures", "Screenshots"),
+            os.path.join(os.path.expanduser("~"), "OneDrive", "Pictures", "Screenshots"),
+            os.path.join(os.path.expanduser("~"), "OneDrive - Personal", "Pictures", "Screenshots"),
+            # Some versions of Snip & Sketch save here
+            os.path.join(os.path.expanduser("~"), "Videos", "Captures"),
+        ]
 
-        if not os.path.exists(screenshots_dir):
-            try:
-                os.makedirs(screenshots_dir, exist_ok=True)
-            except Exception:
-                print(f"[Watcher] Could not create directory: {screenshots_dir}")
-                return
-
-        event_handler = ScreenshotHandler(self.callback)
         self.observer = Observer()
-        self.observer.schedule(event_handler, screenshots_dir, recursive=False)
-        self.observer.start()
-        print(f"[Watcher] Monitoring: {screenshots_dir}")
+        monitored_count = 0
+
+        for d in possible_dirs:
+            if os.path.exists(d):
+                event_handler = ScreenshotHandler(self.callback)
+                self.observer.schedule(event_handler, d, recursive=False)
+                print(f"[Watcher] Now monitoring: {d}")
+                monitored_count += 1
+
+        if monitored_count > 0:
+            self.observer.start()
+        else:
+            print("[Watcher] WARNING: No screenshot folders found to monitor.")
 
     def stop(self):
         """Stop monitoring."""
