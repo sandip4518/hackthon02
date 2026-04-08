@@ -82,17 +82,27 @@ Your desktop is buried under **1000+ screenshots** and you can never find *"that
 
 ### Setup
 
+The easiest way to set up ScreenZen is using the automated scripts:
+
+1. **Run `setup.bat`** — This will automatically create a virtual environment, install all dependencies, and set up your data directories.
+
+Alternatively, you can set it up manually:
+
 ```bash
 # 1. Clone the repository
 git clone https://github.com/yourusername/SCREENZEN.git
 cd SCREENZEN
 
-# 2. Create a virtual environment (recommended)
+# 2. Create a virtual environment
 python -m venv venv
 
 # 3. Activate the virtual environment
-# Windows:
+# Windows (Command Prompt):
 venv\Scripts\activate
+# Windows (Git Bash / Bash):
+source venv/Scripts/activate
+# Windows (PowerShell):
+.\venv\Scripts\Activate.ps1
 
 # 4. Install dependencies
 pip install -r requirements.txt
@@ -100,9 +110,16 @@ pip install -r requirements.txt
 
 ### Running the App
 
-```bash
-python main.py
-```
+To launch ScreenZen:
+- **Option A (Recommended):** Just double-click `run.bat`. This automatically uses the virtual environment.
+- **Option B (Terminal):** Activate the `venv` and run `python main.py`.
+
+### 🛠️ IDE Configuration (VS Code / PyCharm)
+
+If you see "Module not found" or "Import error" in your IDE:
+1. **VS Code:** Click on the Python version in the bottom-right status bar (or press `Ctrl+Shift+P` and type "Python: Select Interpreter").
+2. Choose the interpreter located at `.\venv\Scripts\python.exe`.
+3. This will resolve all import errors and enable full IntelliSense.
 
 ---
 
