@@ -1,4 +1,4 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # 🖥️ ScreenZen — Screenshot Super-Organizer
 
@@ -6,8 +6,8 @@
 
 ![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Tesseract](https://img.shields.io/badge/Tesseract-OCR-4285F4?style=for-the-badge&logo=google&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 </div>
 
@@ -18,7 +18,6 @@
 - [The Problem](#-the-problem)
 - [The Solution](#-the-solution)
 - [Key Features](#-key-features)
-- [Screenshots](#-screenshots)
 - [Tech Stack](#-tech-stack)
 - [Installation](#-installation)
 - [Usage](#-usage)
@@ -35,7 +34,7 @@ Your desktop is buried under **1000+ screenshots** and you can never find *"that
 
 ## ✨ The Solution
 
-**ScreenZen** is a lightweight Python desktop app that lets you drag-and-drop your screenshots, automatically extracts text from them using OCR, organizes them by date and tags, and gives you **instant full-text search** across all your images.
+**ScreenZen** is a lightweight Python desktop app that automatically watches your Windows Screenshots folder, extracts text from new captures using OCR, organizes them by date and tags, and gives you **instant full-text search** across all your images.
 
 > 🔍 Search YOUR screenshots by their **content**, not just filenames.
 
@@ -45,16 +44,17 @@ Your desktop is buried under **1000+ screenshots** and you can never find *"that
 
 | Feature | Description |
 |---------|-------------|
-| 📂 **Drag & Drop Upload** | Import screenshots via file dialog or drag-and-drop |
-| 🔤 **OCR Text Extraction** | Powered by Tesseract — extracts all visible text from images |
+| 👁️ **Auto Screenshot Detection** | Watches your Screenshots folder in the background — no manual import needed |
+| 🔤 **OCR Text Extraction** | Powered by Tesseract — extracts all visible text from images automatically |
+| ✅ **Confirm Dialog** | Review, rename, and verify metadata before a screenshot is saved |
 | 🏷️ **Smart Tagging** | Auto-generated keyword tags from OCR results |
 | 📅 **Date Grouping** | Screenshots organized by capture/import date |
 | 🔍 **Full-Text Search** | Search across ALL extracted text instantly |
-| 🖼️ **Gallery View** | Beautiful grid gallery with image previews |
-| 📦 **Export ZIP** | Select and export screenshots as a zip archive |
-| 🌙 **Dark Theme** | Modern, eye-friendly dark UI built with CustomTkinter |
+| 🖼️ **Gallery View** | Grid gallery with image previews and image cards |
+| 📂 **Drag & Drop Upload** | Also supports manual import via file dialog or drag-and-drop zone |
 | 💾 **Local SQLite DB** | All data stored locally — no cloud, no privacy concerns |
-| 📊 **Dashboard Stats** | Total images, tags, and storage usage at a glance |
+| 🌙 **Dark Theme** | Modern, eye-friendly dark UI built with CustomTkinter |
+| 🔔 **System Tray** | Runs quietly in the background via system tray icon (pystray) |
 
 ---
 
@@ -67,7 +67,9 @@ Your desktop is buried under **1000+ screenshots** and you can never find *"that
 | **OCR Engine** | Tesseract OCR via `pytesseract` |
 | **Image Processing** | Pillow (PIL) |
 | **Database** | SQLite3 (built-in) |
-| **Packaging** | PyInstaller (for .exe conversion) |
+| **Folder Watcher** | `watchdog` — monitors Screenshots folder for new files |
+| **System Tray** | `pystray` — background tray icon |
+| **Packaging** | PyInstaller (for `.exe` conversion) |
 
 ---
 
@@ -78,29 +80,34 @@ Your desktop is buried under **1000+ screenshots** and you can never find *"that
 1. **Python 3.9+** — [Download here](https://www.python.org/downloads/)
 2. **Tesseract OCR** — [Download here](https://github.com/UB-Mannheim/tesseract/wiki)
    - During installation, note the install path (default: `C:\Program Files\Tesseract-OCR`)
-   - Add Tesseract to your system PATH, or the app will auto-detect common paths
+   - Add Tesseract to your system PATH, or the app will auto-detect common install locations
 
-### Setup
+### Quick Setup (Recommended)
+
+Double-click `setup.bat` — it will:
+1. Verify Python and Tesseract installations
+2. Clean any legacy files from previous versions
+3. Create and activate a virtual environment
+4. Install all dependencies from `requirements.txt`
+5. Create the required `data/` directories
+6. Run a quick test suite
+7. Optionally launch the app immediately
+
+### Manual Setup
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/SCREENZEN.git
-cd SCREENZEN
+git clone https://github.com/yourusername/screenzen.git
+cd screenzen
 
-# 2. Create a virtual environment (recommended)
+# 2. Create and activate a virtual environment
 python -m venv venv
-
-# 3. Activate the virtual environment
-# Windows:
 venv\Scripts\activate
 
-# 4. Install dependencies
+# 3. Install dependencies
 pip install -r requirements.txt
-```
 
-### Running the App
-
-```bash
+# 4. Run the app
 python main.py
 ```
 
@@ -108,94 +115,107 @@ python main.py
 
 ## 🎯 Usage
 
-1. **Launch** the application with `python main.py`
-2. **Import Screenshots** — Click "Add Screenshots" or use the drag-drop zone
-3. **Wait for OCR** — Text extraction runs automatically in the background
-4. **Search** — Type any keyword in the search bar to find matching screenshots
-5. **Browse** — Use the gallery view, filter by date or tags
-6. **Export** — Select images and click "Export ZIP" to bundle them
+### Option A — Run with the batch script (easiest)
+
+Double-click `run.bat`. It activates the virtual environment and launches the app automatically.
+
+### Option B — Run manually from terminal
+
+```bash
+venv\Scripts\activate
+python main.py
+```
+
+### Workflow
+
+1. **Launch** the app — it starts monitoring your Screenshots folder in the background
+2. **Take a screenshot** — Windows `Win + PrtScn`, Snipping Tool, or Snip & Sketch
+3. **Confirm** — a dialog appears asking you to review the OCR-extracted text and save
+4. **Browse** — use the gallery view to browse, filter by date or tags
+5. **Search** — type any keyword in the search bar to find matching screenshots instantly
+
+> The background watcher monitors these folders automatically:
+> - `~/Pictures/Screenshots`
+> - `~/OneDrive/Pictures/Screenshots`
+> - `~/Videos/Captures` (Snip & Sketch)
 
 ---
 
 ## 🏗️ Building EXE
 
-Convert ScreenZen into a standalone Windows executable:
+### Option A — Use the batch script
+
+Double-click `build_exe.bat`. It cleans previous builds, checks for PyInstaller, and produces `dist\ScreenZen.exe`.
+
+### Option B — Manual PyInstaller command
 
 ```bash
-# 1. Install PyInstaller
-pip install pyinstaller
+# Activate venv first
+venv\Scripts\activate
 
-# 2. Build the executable
-pyinstaller --onefile --windowed --name ScreenZen --icon=assets/icon.ico main.py
+# Build (with icon)
+pyinstaller --onefile --windowed --name ScreenZen --icon=assets\icon.ico main.py
 
-# 3. Find your exe
-# Output: dist/ScreenZen.exe
+# Output: dist\ScreenZen.exe
 ```
 
-> **Note:** Make sure Tesseract OCR is installed on the target machine, or bundle it with the exe using `--add-data`.
-
-### Bundling Tesseract with the EXE
-
-```bash
-pyinstaller --onefile --windowed --name ScreenZen --icon=assets/icon.ico \
-  --add-data "C:\Program Files\Tesseract-OCR;Tesseract-OCR" \
-  main.py
-```
+> **Note:** Tesseract OCR must be separately installed on the target machine. To bundle Tesseract inside the EXE:
+>
+> ```bash
+> pyinstaller --onefile --windowed --name ScreenZen --icon=assets\icon.ico ^
+>   --add-data "C:\Program Files\Tesseract-OCR;Tesseract-OCR" ^
+>   main.py
+> ```
 
 ---
 
 ## 📁 Project Structure
 
 ```
-SCREENZEN/
-├── main.py                 # Application entry point
-├── requirements.txt        # Python dependencies
-├── README.md               # This file
+screenzen/
+├── main.py                      # Application entry point
+├── requirements.txt             # Python dependencies
+├── setup.bat                    # One-click setup script
+├── run.bat                      # One-click launcher
+├── build_exe.bat                # One-click EXE builder
+├── ScreenZen.spec               # PyInstaller spec file
+├── README.md                    # This file
+├── LICENSE
 ├── assets/
-│   └── icon.ico            # App icon
-├── screenzen/
-│   ├── __init__.py         # Package init
-│   ├── app.py              # Main application window
-│   ├── database.py         # SQLite database manager
-│   ├── ocr_engine.py       # Tesseract OCR wrapper
-│   ├── image_manager.py    # Image import/processing/export
-│   ├── search_engine.py    # Full-text search logic
+│   └── icon.ico                 # App icon
+├── screenzen/                   # Core Python package
+│   ├── __init__.py
+│   ├── app.py                   # Main application window
+│   ├── database.py              # SQLite database manager
+│   ├── ocr_engine.py            # Tesseract OCR wrapper
+│   ├── image_manager.py         # Image import / processing / export
+│   ├── search_engine.py         # Full-text search logic
+│   ├── background_monitor.py    # Watchdog-based Screenshots folder watcher
 │   └── widgets/
-│       ├── __init__.py     # Widgets package init
-│       ├── gallery.py      # Gallery grid view widget
-│       ├── sidebar.py      # Sidebar with tags/dates/stats
-│       ├── search_bar.py   # Search bar widget
-│       ├── image_card.py   # Individual image card widget
-│       └── drop_zone.py    # Drag & drop upload zone
-├── data/                   # Runtime data (auto-created)
-│   ├── screenzen.db        # SQLite database
-│   └── thumbnails/         # Cached image thumbnails
+│       ├── confirm_dialog.py    # OCR review & confirm dialog
+│       ├── drop_zone.py         # Drag & drop upload zone
+│       ├── gallery.py           # Gallery grid view widget
+│       ├── image_card.py        # Individual image card widget
+│       └── search_bar.py        # Search bar widget
+├── data/                        # Runtime data (auto-created)
+│   ├── screenzen.db             # SQLite database
+│   ├── images/                  # Saved screenshot copies
+│   └── thumbnails/              # Cached image thumbnails
 └── tests/
-    └── test_ocr.py         # Basic OCR tests
+    └── test_ocr.py              # Basic OCR tests
 ```
 
 ---
 
 ## 🗺️ Future Roadmap
 
-- [ ] **Auto-Capture** — Monitor clipboard/desktop for new screenshots
 - [ ] **Annotation Tools** — Draw, highlight, and annotate screenshots
 - [ ] **Cloud Sync** — Optional cloud storage with team sharing
-- [ ] **Folder Watch** — Auto-import from watched directories
 - [ ] **AI Tagging** — Smart categorization using ML models
 - [ ] **Multi-language OCR** — Support for non-English text extraction
 - [ ] **Batch Operations** — Bulk tag, delete, or export
 - [ ] **Keyboard Shortcuts** — Power-user productivity features
-
----
-
-## 💰 Monetization Ideas
-
-| Tier | Price | Features |
-|------|-------|----------|
-| **Free** | $0 | Local storage, unlimited screenshots, full OCR |
-| **Pro** | $2/mo | Cloud backup, team sharing, priority support |
-| **Enterprise** | Custom | API access, SSO, admin dashboard |
+- [ ] **Export ZIP** — Select and export screenshots as a zip archive
 
 ---
 
@@ -207,9 +227,8 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 <div align="center">
 
-**Built with ❤️ by ScreenZen**
+**Built with ❤️ for the hackathon**
 
 *Stop scrolling. Start searching.*
 
 </div>
-]]>
