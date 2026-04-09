@@ -37,3 +37,6 @@ next-env.d.ts
 tsconfig.json
 postcss.config.js
 tailwind.config.ts
+
+
+assets/tesseract
