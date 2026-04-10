@@ -42,6 +42,14 @@ class ScreenZenApp(ctk.CTk):
 
         self.configure(fg_color="#181825")
 
+        # ── Icon ──
+        icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "logo.ico")
+        if os.path.exists(icon_path):
+            try:
+                self.iconbitmap(icon_path)
+            except Exception as e:
+                print(f"[ScreenZen] Could not set icon: {e}")
+
         # ── Backend services ──
         self.db = DatabaseManager()
         self.ocr = OCREngine()

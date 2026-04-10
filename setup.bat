@@ -75,6 +75,12 @@ if exist "lib" rmdir /s /q lib
 echo [OK] Legacy files cleaned.
 echo.
 
+:: Step 0: Pre-check processes
+echo [0/6] Cleaning up existing Python processes...
+taskkill /F /IM python.exe /T >nul 2>&1
+echo [OK] Background processes cleared.
+echo.
+
 :: Step 4: Create virtual environment
 echo [4/6] Creating virtual environment...
 if exist "venv" rmdir /s /q venv

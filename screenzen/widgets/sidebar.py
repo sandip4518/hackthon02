@@ -3,7 +3,9 @@ Sidebar Widget for ScreenZen.
 Shows stats, tag cloud, and date filters.
 """
 
+import os
 import customtkinter as ctk
+from PIL import Image
 from typing import Callable, Dict, List, Optional
 
 
@@ -33,21 +35,44 @@ class Sidebar(ctk.CTkFrame):
 
         # ── Logo / App Title ──
         logo_frame = ctk.CTkFrame(self, fg_color="transparent")
-        logo_frame.pack(fill="x", padx=16, pady=(20, 4))
+        logo_frame.pack(fill="x", padx=16, pady=(20, 2))
+
+        # Use logo image if it exists
+        assets_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "assets")
+        logo_path = os.path.join(assets_path, "logo.png")
+        
+        if os.path.exists(logo_path):
+            try:
+                logo_img = ctk.CTkImage(
+                    light_image=Image.open(logo_path),
+                    dark_image=Image.open(logo_path),
+                    size=(32, 32)
+                )
+                self.logo_label = ctk.CTkLabel(logo_frame, image=logo_img, text="")
+                self.logo_label.pack(side="left", padx=(0, 10))
+            except Exception as e:
+                print(f"[ScreenZen] Could not load sidebar logo: {e}")
+                ctk.CTkLabel(logo_frame, text="🖥️").pack(side="left", padx=(0, 10))
+        else:
+            ctk.CTkLabel(logo_frame, text="🖥️").pack(side="left", padx=(0, 10))
+
+        # Text container for Title + Subtitle
+        text_container = ctk.CTkFrame(logo_frame, fg_color="transparent")
+        text_container.pack(side="left", fill="y")
 
         ctk.CTkLabel(
-            logo_frame,
-            text="🖥️  ScreenZen",
+            text_container,
+            text="ScreenZen",
             font=ctk.CTkFont(family="Segoe UI", size=22, weight="bold"),
             text_color="#cdd6f4",
         ).pack(anchor="w")
 
         ctk.CTkLabel(
-            logo_frame,
+            text_container,
             text="Screenshot Super-Organizer",
             font=ctk.CTkFont(size=11),
             text_color="#6c7086",
-        ).pack(anchor="w", pady=(2, 0))
+        ).pack(anchor="w", pady=(0, 0))
 
         # Divider
         ctk.CTkFrame(self, fg_color="#313244", height=1).pack(fill="x", padx=16, pady=12)

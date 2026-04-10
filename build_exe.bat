@@ -40,10 +40,20 @@ echo [3/3] Building ScreenZen.exe...
 echo This may take a few minutes...
 echo.
 
-if exist "assets\icon.ico" (
-    pyinstaller --onefile --windowed --name ScreenZen --icon=assets\icon.ico main.py
+if exist "assets\logo.ico" (
+    pyinstaller --onefile --windowed --name ScreenZen ^
+        --icon=assets\logo.ico ^
+        --add-data "assets\tesseract;assets\tesseract" ^
+        main.py
+) else if exist "assets\icon.ico" (
+    pyinstaller --onefile --windowed --name ScreenZen ^
+        --icon=assets\icon.ico ^
+        --add-data "assets\tesseract;assets\tesseract" ^
+        main.py
 ) else (
-    pyinstaller --onefile --windowed --name ScreenZen main.py
+    pyinstaller --onefile --windowed --name ScreenZen ^
+        --add-data "assets\tesseract;assets\tesseract" ^
+        main.py
 )
 
 if %errorlevel% neq 0 (

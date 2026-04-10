@@ -9,6 +9,7 @@ import shutil
 from typing import Tuple, List, Optional
 from collections import Counter
 
+import sys
 try:
     import pytesseract
     from PIL import Image, ImageFilter, ImageEnhance
@@ -57,12 +58,27 @@ class OCREngine:
         if not TESSERACT_AVAILABLE:
             return
 
-        # Check if tesseract is already in PATH
+        # 1. Check for bundled Tesseract (Priority)
+        if getattr(sys, 'frozen', False):
+            # Running as EXE
+            base_dir = sys._MEIPASS
+        else:
+            # Running as script
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            
+        local_path = os.path.join(base_dir, "assets", "tesseract", "tesseract.exe")
+        if os.path.isfile(local_path):
+            pytesseract.pytesseract.tesseract_cmd = local_path
+            self.tesseract_path = local_path
+            self.is_available = True
+            return
+
+        # 2. Check if tesseract is already in PATH
         if shutil.which("tesseract"):
             self.is_available = True
             return
 
-        # Check common installation paths
+        # 3. Check common installation paths
         username = os.environ.get("USERNAME", "")
         for path_template in TESSERACT_PATHS:
             path = path_template.format(username) if "{}" in path_template else path_template
